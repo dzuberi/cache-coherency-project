@@ -11,7 +11,7 @@ extern Simulator *Sim;
 MESI_protocol::MESI_protocol (Hash_table *my_table, Hash_entry *my_entry)
     : Protocol (my_table, my_entry)
 {
-    this->state = MESI_CACHE_I
+    this->state = MESI_CACHE_I;
 }
 
 MESI_protocol::~MESI_protocol ()
@@ -55,12 +55,12 @@ inline void MESI_protocol::do_cache_I (Mreq *request)
         case LOAD:
             send_GETS(request->addr);
             //state = MESI_CACHE_E;
-            SIM->cache_misses++;
+            Sim->cache_misses++;
             break;
         case STORE:
             send_GETM(request->addr);
             //state = MESI_CACHE_M;
-            SIM->cache_misses++;
+            Sim->cache_misses++;
             break;
         default:
             request->print_msg (my_table->moduleID,"ERROR");
@@ -77,7 +77,7 @@ inline void MESI_protocol::do_cache_S (Mreq *request)
         case STORE:
             send_GETM(request->addr);
             //state = MESI_CACHE_M;
-            SIM->cache_misses++;
+            Sim->cache_misses++;
             break;
         default:
             request->print_msg (my_table->moduleID,"ERROR");
@@ -157,10 +157,12 @@ inline void MESI_protocol::do_snoop_E (Mreq *request)
     switch(request->msg) {
         case GETS:
             set_shared_line();
+            send_DATA_on_bus(request->addr,request->src_mid);
             state=MESI_CACHE_S;
             break;
         case GETM:
             set_shared_line();
+            send_DATA_on_bus(request->addr,request->src_mid);
             state=MESI_CACHE_I;
             break;
         case DATA:
@@ -177,12 +179,12 @@ inline void MESI_protocol::do_snoop_M (Mreq *request)
         case GETS:
             set_shared_line();
             send_DATA_on_bus(request->addr,request->src_mid);
-            state=MI_CACHE_S;
+            state=MESI_CACHE_S;
             break;
         case GETM:
-            set_shared_line();
+            //set_shared_line();
             send_DATA_on_bus(request->addr,request->src_mid);
-            state=MI_CACHE_I;
+            state=MESI_CACHE_I;
             break;
         case DATA:
             break;
