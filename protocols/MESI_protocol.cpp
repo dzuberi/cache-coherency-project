@@ -26,27 +26,33 @@ void MESI_protocol::dump (void)
 
 void MESI_protocol::process_cache_request (Mreq *request)
 {
+    //printf("state before:%d\n",state);
 	switch (state) {
         case MESI_CACHE_I: do_cache_I(request); break;
         case MESI_CACHE_S: do_cache_S(request); break;
         case MESI_CACHE_E: do_cache_E(request); break;
         case MESI_CACHE_M: do_cache_M(request); break;
-    default:
+        default:
         fatal_error ("Invalid Cache State for MESI Protocol\n");
     }
+    //printf("state after:%d\n",state);
 }
 
 void MESI_protocol::process_snoop_request (Mreq *request)
 {
+    fprintf(stderr,"**** STATEB4: %d\n",state);
 	switch (state) {
         case MESI_CACHE_I: do_snoop_I(request); break;
         case MESI_CACHE_S: do_snoop_S(request); break;
         case MESI_CACHE_E: do_snoop_E(request); break;
         case MESI_CACHE_M: do_snoop_M(request); break;
-
+        case MESI_CACHE_IM: do_snoop_IM(request); break;
+        case MESI_CACHE_ISE: do_snoop_ISE(request); break;
+        case MESI_CACHE_SM: do_snoop_SM(request); break;
     default:
     	fatal_error ("Invalid Cache State for MESI Protocol\n");
     }
+    fprintf(stderr,"**** STATEAF: %d\n",state);
 }
 
 inline void MESI_protocol::do_cache_I (Mreq *request)
@@ -55,11 +61,13 @@ inline void MESI_protocol::do_cache_I (Mreq *request)
         case LOAD:
             send_GETS(request->addr);
             //state = MESI_CACHE_E;
+            state = MESI_CACHE_ISE;
             Sim->cache_misses++;
             break;
         case STORE:
             send_GETM(request->addr);
             //state = MESI_CACHE_M;
+            state = MESI_CACHE_IM;
             Sim->cache_misses++;
             break;
         default:
@@ -76,7 +84,7 @@ inline void MESI_protocol::do_cache_S (Mreq *request)
             break;
         case STORE:
             send_GETM(request->addr);
-            //state = MESI_CACHE_M;
+            state = MESI_CACHE_SM;
             Sim->cache_misses++;
             break;
         default:
@@ -93,6 +101,7 @@ inline void MESI_protocol::do_cache_E (Mreq *request)
             break;
         case STORE:
             state = MESI_CACHE_M;
+            Sim->silent_upgrades++;
             send_DATA_to_proc(request->addr);
             break;
         default:
@@ -122,11 +131,11 @@ inline void MESI_protocol::do_snoop_I (Mreq *request)
         case GETM:
             break;
         case DATA:
-            send_DATA_to_proc(request->addr);
-            if(get_shared_line()){
-                state=MESI_CACHE_S;
-            }
-            else state=MESI_CACHE_E;
+            //send_DATA_to_proc(request->addr);
+            //if(get_shared_line()){
+            //    state=MESI_CACHE_S;
+            //}
+            //else state=MESI_CACHE_E;
             break;
         default:
             request->print_msg (my_table->moduleID,"ERROR");
@@ -156,13 +165,18 @@ inline void MESI_protocol::do_snoop_E (Mreq *request)
 {
     switch(request->msg) {
         case GETS:
-            set_shared_line();
+            //if(!get_shared_line()){
             send_DATA_on_bus(request->addr,request->src_mid);
+            //}
+            //printf("%d\n",state);            
             state=MESI_CACHE_S;
+            set_shared_line();
             break;
         case GETM:
-            set_shared_line();
+            //if(!get_shared_line()){
             send_DATA_on_bus(request->addr,request->src_mid);
+            //}
+            set_shared_line();
             state=MESI_CACHE_I;
             break;
         case DATA:
@@ -177,14 +191,20 @@ inline void MESI_protocol::do_snoop_M (Mreq *request)
 {
     switch(request->msg) {
         case GETS:
+            //if(!get_shared_line()){
             set_shared_line();
             send_DATA_on_bus(request->addr,request->src_mid);
+            //}
             state=MESI_CACHE_S;
+            //set_shared_line();
             break;
         case GETM:
-            //set_shared_line();
+            //if(!get_shared_line()){
+            set_shared_line();
             send_DATA_on_bus(request->addr,request->src_mid);
+            //}
             state=MESI_CACHE_I;
+            //set_shared_line();
             break;
         case DATA:
             break;
@@ -194,3 +214,56 @@ inline void MESI_protocol::do_snoop_M (Mreq *request)
     }
 }
 
+inline void MESI_protocol::do_snoop_IM (Mreq *request)
+{
+    switch(request->msg) {
+        case GETS:
+            break;
+        case GETM:
+            break;
+        case DATA:
+            send_DATA_to_proc(request->addr);
+            state = MESI_CACHE_M;
+            break;
+        default:
+            request->print_msg (my_table->moduleID,"ERROR");
+            fatal_error("Client: IM state shouldn't see this message\n");
+    }
+}
+
+inline void MESI_protocol::do_snoop_ISE (Mreq *request)
+{
+    switch(request->msg) {
+        case GETS:
+            break;
+        case GETM:
+            break;
+        case DATA:
+            send_DATA_to_proc(request->addr);
+            if(get_shared_line()){
+                state = MESI_CACHE_S;
+            }
+            else state = MESI_CACHE_E;
+            break;
+        default:
+            request->print_msg (my_table->moduleID,"ERROR");
+            fatal_error("Client: ISE state shouldn't see this message\n");
+    }
+}
+
+inline void MESI_protocol::do_snoop_SM (Mreq *request)
+{
+    switch(request->msg) {
+        case GETS:
+            break;
+        case GETM:
+            break;
+        case DATA:
+            send_DATA_to_proc(request->addr);
+            state = MESI_CACHE_M;
+            break;
+        default:
+            request->print_msg (my_table->moduleID,"ERROR");
+            fatal_error("Client: SM state shouldn't see this message\n");
+    }
+}
