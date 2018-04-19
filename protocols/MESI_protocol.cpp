@@ -20,7 +20,7 @@ MESI_protocol::~MESI_protocol ()
 
 void MESI_protocol::dump (void)
 {
-    const char *block_states[5] = {"X","I","S","E","M"};
+    const char *block_states[8] = {"X","I","S","E","M","IM","ISE","SM"};
     fprintf (stderr, "MESI_protocol - state: %s\n", block_states[state]);
 }
 
@@ -40,7 +40,7 @@ void MESI_protocol::process_cache_request (Mreq *request)
 
 void MESI_protocol::process_snoop_request (Mreq *request)
 {
-    fprintf(stderr,"**** STATEB4: %d\n",state);
+    //this->dump();
 	switch (state) {
         case MESI_CACHE_I: do_snoop_I(request); break;
         case MESI_CACHE_S: do_snoop_S(request); break;
@@ -52,7 +52,7 @@ void MESI_protocol::process_snoop_request (Mreq *request)
     default:
     	fatal_error ("Invalid Cache State for MESI Protocol\n");
     }
-    fprintf(stderr,"**** STATEAF: %d\n",state);
+    //this->dump();
 }
 
 inline void MESI_protocol::do_cache_I (Mreq *request)
@@ -166,11 +166,11 @@ inline void MESI_protocol::do_snoop_E (Mreq *request)
     switch(request->msg) {
         case GETS:
             //if(!get_shared_line()){
+            set_shared_line();
             send_DATA_on_bus(request->addr,request->src_mid);
             //}
             //printf("%d\n",state);            
             state=MESI_CACHE_S;
-            set_shared_line();
             break;
         case GETM:
             //if(!get_shared_line()){
@@ -235,6 +235,7 @@ inline void MESI_protocol::do_snoop_ISE (Mreq *request)
 {
     switch(request->msg) {
         case GETS:
+            //set_shared_line();
             break;
         case GETM:
             break;
@@ -255,6 +256,7 @@ inline void MESI_protocol::do_snoop_SM (Mreq *request)
 {
     switch(request->msg) {
         case GETS:
+            set_shared_line();
             break;
         case GETM:
             break;
