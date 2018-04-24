@@ -138,10 +138,8 @@ inline void MOSI_protocol::do_snoop_S (Mreq *request)
 {
     switch(request->msg){
         case GETS:
-            //set_shared_line();
             break;
         case GETM:
-            //set_shared_line();
             state=MOSI_CACHE_I;
             break;
         case DATA:
@@ -156,13 +154,17 @@ inline void MOSI_protocol::do_snoop_O (Mreq *request)
 {
     switch(request->msg){
         case GETS:
-            //set_shared_line();
-            send_DATA_on_bus(request->addr,request->src_mid);
+            if(!get_shared_line()){
+                send_DATA_on_bus(request->addr,request->src_mid);
+            }
+            set_shared_line();
             break;
         case GETM:
+            if(!get_shared_line()){
+                send_DATA_on_bus(request->addr,request->src_mid);
+            }
             set_shared_line();
-            send_DATA_on_bus(request->addr,request->src_mid);
-            state=MOSI_CACHE_I;
+            state = MOSI_CACHE_I;
             break;
         case DATA:
             break;
@@ -176,13 +178,17 @@ inline void MOSI_protocol::do_snoop_M (Mreq *request)
 {
     switch(request->msg){
         case GETS:
-            //set_shared_line();
-            send_DATA_on_bus(request->addr,request->src_mid);
+            if(!get_shared_line()){
+                send_DATA_on_bus(request->addr,request->src_mid);
+            }
+            set_shared_line();
             state=MOSI_CACHE_O;
             break;
         case GETM:
+            if(!get_shared_line()){
+                send_DATA_on_bus(request->addr,request->src_mid);
+            }
             set_shared_line();
-            send_DATA_on_bus(request->addr,request->src_mid);
             state=MOSI_CACHE_I;
             break;
         case DATA:
@@ -234,7 +240,6 @@ inline void MOSI_protocol::do_snoop_SM (Mreq *request)
 {
     switch(request->msg){
         case GETS:
-            set_shared_line();
             break;
         case GETM:
             break;
@@ -252,15 +257,16 @@ inline void MOSI_protocol::do_snoop_OM (Mreq *request)
 {
     switch(request->msg){
         case GETS:
-            set_shared_line();
             if(!get_shared_line()){
                 send_DATA_on_bus(request->addr,request->src_mid);
             }
+            set_shared_line();
             break;
         case GETM:
             if(!get_shared_line()){
                 send_DATA_on_bus(request->addr,request->src_mid);
             }
+            set_shared_line();
             break;
         case DATA:
             send_DATA_to_proc(request->addr);

@@ -41,7 +41,7 @@ void MOESIF_protocol::process_cache_request (Mreq *request)
 
 void MOESIF_protocol::process_snoop_request (Mreq *request)
 {
-    //this->dump();
+    this->dump();
 	switch (state) {
         case MOESIF_CACHE_I: do_snoop_I(request); break;
         case MOESIF_CACHE_S: do_snoop_S(request); break;
@@ -57,7 +57,7 @@ void MOESIF_protocol::process_snoop_request (Mreq *request)
     default:
     	fatal_error ("Invalid Cache State for MOESIF Protocol\n");
     }
-    //this->dump();
+    this->dump();
 }
 
 inline void MOESIF_protocol::do_cache_F (Mreq *request)
@@ -261,8 +261,10 @@ inline void MOESIF_protocol::do_snoop_M (Mreq *request)
             state=MOESIF_CACHE_O;
             break;
         case GETM:
+            if(!get_shared_line()){
+                send_DATA_on_bus(request->addr,request->src_mid);
+            }
             set_shared_line();
-            send_DATA_on_bus(request->addr, request->src_mid);
             state=MOESIF_CACHE_I;
             break;
         case DATA:
@@ -317,11 +319,13 @@ inline void MOESIF_protocol::do_snoop_FM (Mreq *request)
             if(!get_shared_line()){
                 send_DATA_on_bus(request->addr,request->src_mid);
             }
+            set_shared_line();
             break;
         case GETM:
             if(!get_shared_line()){
                 send_DATA_on_bus(request->addr,request->src_mid);
             }
+            set_shared_line();
             break;
         case DATA:
             send_DATA_to_proc(request->addr);
@@ -356,11 +360,16 @@ inline void MOESIF_protocol::do_snoop_OM (Mreq *request)
 {
     switch(request->msg){
         case GETS:
+            if(!get_shared_line()){
+                send_DATA_on_bus(request->addr,request->src_mid);
+            }
+            set_shared_line();
             break;
         case GETM:
             if(!get_shared_line()){
                 send_DATA_on_bus(request->addr,request->src_mid);
             }
+            set_shared_line();
             break;
         case DATA:
             send_DATA_to_proc(request->addr);
