@@ -199,6 +199,8 @@ inline void MOSI_protocol::do_snoop_M (Mreq *request)
     }
 }
 
+
+//intermediate state when I calls getM, waits for data
 inline void MOSI_protocol::do_snoop_IM (Mreq *request)
 {
     switch(request->msg){
@@ -216,6 +218,7 @@ inline void MOSI_protocol::do_snoop_IM (Mreq *request)
     }
 }
 
+//interemdiate state when I calls getS, waits for data
 inline void MOSI_protocol::do_snoop_IS (Mreq *request)
 {
     switch(request->msg){
@@ -236,6 +239,7 @@ inline void MOSI_protocol::do_snoop_IS (Mreq *request)
     }
 }
 
+///intermediate state when S calls getM, waits for data
 inline void MOSI_protocol::do_snoop_SM (Mreq *request)
 {
     switch(request->msg){
@@ -253,6 +257,8 @@ inline void MOSI_protocol::do_snoop_SM (Mreq *request)
     }
 }
 
+
+//intermediate state when O calls getM waits for data. Also sometimes has to send data, since it is still technically an O state.
 inline void MOSI_protocol::do_snoop_OM (Mreq *request)
 {
     switch(request->msg){

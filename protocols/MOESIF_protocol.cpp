@@ -275,6 +275,7 @@ inline void MOESIF_protocol::do_snoop_M (Mreq *request)
     }
 }
 
+//intermediate state for when I calls getS, can either end as S or E depending on shared line
 inline void MOESIF_protocol::do_snoop_ISE (Mreq *request)
 {
     switch(request->msg){
@@ -291,10 +292,11 @@ inline void MOESIF_protocol::do_snoop_ISE (Mreq *request)
             break;
         default:
             request->print_msg (my_table->moduleID,"ERROR");
-            fatal_error("Client: ISE state shouldn't see this message\n");
+             fatal_error("Client: ISE state shouldn't see this message\n");
     }
 }
 
+//intermediate state when I calls getM, waits for data.
 inline void MOESIF_protocol::do_snoop_IM (Mreq *request)
 {
     switch(request->msg){
@@ -312,18 +314,19 @@ inline void MOESIF_protocol::do_snoop_IM (Mreq *request)
     }
 }
 
+//intermediate state when F calls a getM to wait for data. Sends data if it needs to
 inline void MOESIF_protocol::do_snoop_FM (Mreq *request)
 {
     switch(request->msg){
         case GETS:
             //if(!get_shared_line()){
-                send_DATA_on_bus(request->addr,request->src_mid);
+                send_DATA_on_bus(request->addr,request->src_mid);//only one cache can be in an M, F, O, or any of the intermediates so this is ok
             //}
             set_shared_line();
             break;
         case GETM:
             if(!get_shared_line()){
-                send_DATA_on_bus(request->addr,request->src_mid);
+                send_DATA_on_bus(request->addr,request->src_mid);//this works for when one of them need to send data to themselves
             }
             set_shared_line();
             break;
@@ -337,7 +340,7 @@ inline void MOESIF_protocol::do_snoop_FM (Mreq *request)
     }
 }
 
-
+//intermediate state when S calls a getM to wait for data. 
 inline void MOESIF_protocol::do_snoop_SM (Mreq *request)
 {
     switch(request->msg){
@@ -356,18 +359,19 @@ inline void MOESIF_protocol::do_snoop_SM (Mreq *request)
     }
 }
 
+//intermediate state when O calls getM to wait for data. Sends data if it needs to
 inline void MOESIF_protocol::do_snoop_OM (Mreq *request)
 {
     switch(request->msg){
         case GETS:
             //if(!get_shared_line()){
-                send_DATA_on_bus(request->addr,request->src_mid);
+                send_DATA_on_bus(request->addr,request->src_mid); //only one cache can be in an M, F, O, or any of the intermediates so this is ok
             //}
             set_shared_line();
             break;
         case GETM:
             if(!get_shared_line()){
-                send_DATA_on_bus(request->addr,request->src_mid);
+                send_DATA_on_bus(request->addr,request->src_mid); //this implementation works in situations that OM needs to send to itself
             }
             set_shared_line();
             break;

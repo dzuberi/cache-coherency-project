@@ -214,6 +214,7 @@ inline void MESI_protocol::do_snoop_M (Mreq *request)
     }
 }
 
+//intermediate state when I calls getM waiting for data
 inline void MESI_protocol::do_snoop_IM (Mreq *request)
 {
     switch(request->msg) {
@@ -231,6 +232,7 @@ inline void MESI_protocol::do_snoop_IM (Mreq *request)
     }
 }
 
+//intermediate state, when I calls getS to either choose E or S as state.
 inline void MESI_protocol::do_snoop_ISE (Mreq *request)
 {
     switch(request->msg) {
@@ -252,6 +254,7 @@ inline void MESI_protocol::do_snoop_ISE (Mreq *request)
     }
 }
 
+//intermediate state when S calls getM waiting for data
 inline void MESI_protocol::do_snoop_SM (Mreq *request)
 {
     switch(request->msg) {
