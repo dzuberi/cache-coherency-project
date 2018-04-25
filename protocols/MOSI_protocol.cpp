@@ -154,9 +154,9 @@ inline void MOSI_protocol::do_snoop_O (Mreq *request)
 {
     switch(request->msg){
         case GETS:
-            if(!get_shared_line()){
+            //if(!get_shared_line()){
                 send_DATA_on_bus(request->addr,request->src_mid);
-            }
+            //}
             set_shared_line();
             break;
         case GETM:
@@ -178,9 +178,9 @@ inline void MOSI_protocol::do_snoop_M (Mreq *request)
 {
     switch(request->msg){
         case GETS:
-            if(!get_shared_line()){
+            //if(!get_shared_line()){
                 send_DATA_on_bus(request->addr,request->src_mid);
-            }
+            //}
             set_shared_line();
             state=MOSI_CACHE_O;
             break;
@@ -257,9 +257,9 @@ inline void MOSI_protocol::do_snoop_OM (Mreq *request)
 {
     switch(request->msg){
         case GETS:
-            if(!get_shared_line()){
+            //if(!get_shared_line()){
                 send_DATA_on_bus(request->addr,request->src_mid);
-            }
+            //}
             set_shared_line();
             break;
         case GETM:
