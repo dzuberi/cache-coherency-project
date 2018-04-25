@@ -1,0 +1,56 @@
+Experiment number: 1
+
+MESI 317
+MOSI 217
+MOESIF 217
+
+
+Experiment number: 2
+
+MESI 2267
+MOSI 1167
+MOESIF 683
+
+
+Experiment number: 3
+
+MESI 2607
+MOSI 3723
+MOESIF 1425
+
+
+Experiment number: 4
+
+MESI 1447
+MOSI 1869
+MOESIF 551
+
+
+Experiment number: 5
+
+MESI 1561
+MOSI 1261
+MOESIF 461
+
+
+Experiment number: 6
+
+MESI 4925
+MOSI 6975
+MOESIF 3125
+
+
+Experiment number: 7
+
+MESI 3993
+MOSI 5359
+MOESIF 2909
+
+
+Experiment number: 8
+
+MESI 6441
+MOSI 8477
+MOESIF 4141
+
+

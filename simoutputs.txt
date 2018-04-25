@@ -1,0 +1,176 @@
+Experiment number: 1
+MESI
+Run Time:              317 cycles
+Cache Misses:            7 misses
+Cache Accesses:         12 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:        4 transfers
+
+MOSI
+Run Time:              217 cycles
+Cache Misses:            7 misses
+Cache Accesses:         12 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:        5 transfers
+
+MOESIF
+Run Time:              217 cycles
+Cache Misses:            7 misses
+Cache Accesses:         12 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:        5 transfers
+
+Experiment number: 2
+MESI
+Run Time:             2267 cycles
+Cache Misses:           30 misses
+Cache Accesses:        104 accesses
+Silent Upgrades:         1 upgrades
+$-to-$ Transfers:        8 transfers
+
+MOSI
+Run Time:             1167 cycles
+Cache Misses:           30 misses
+Cache Accesses:        104 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:       19 transfers
+
+MOESIF
+Run Time:              683 cycles
+Cache Misses:           34 misses
+Cache Accesses:        104 accesses
+Silent Upgrades:         1 upgrades
+$-to-$ Transfers:       28 transfers
+
+Experiment number: 3
+MESI
+Run Time:             2607 cycles
+Cache Misses:           48 misses
+Cache Accesses:        200 accesses
+Silent Upgrades:         8 upgrades
+$-to-$ Transfers:       23 transfers
+
+MOSI
+Run Time:             3723 cycles
+Cache Misses:           56 misses
+Cache Accesses:        200 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:       20 transfers
+
+MOESIF
+Run Time:             1425 cycles
+Cache Misses:           48 misses
+Cache Accesses:        200 accesses
+Silent Upgrades:         8 upgrades
+$-to-$ Transfers:       35 transfers
+
+Experiment number: 4
+MESI
+Run Time:             1447 cycles
+Cache Misses:           19 misses
+Cache Accesses:         60 accesses
+Silent Upgrades:         3 upgrades
+$-to-$ Transfers:        5 transfers
+
+MOSI
+Run Time:             1869 cycles
+Cache Misses:           29 misses
+Cache Accesses:         60 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:       11 transfers
+
+MOESIF
+Run Time:              551 cycles
+Cache Misses:           19 misses
+Cache Accesses:         60 accesses
+Silent Upgrades:         3 upgrades
+$-to-$ Transfers:       14 transfers
+
+Experiment number: 5
+MESI
+Run Time:             1561 cycles
+Cache Misses:           21 misses
+Cache Accesses:         37 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:        6 transfers
+
+MOSI
+Run Time:             1261 cycles
+Cache Misses:           21 misses
+Cache Accesses:         37 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:        9 transfers
+
+MOESIF
+Run Time:              461 cycles
+Cache Misses:           21 misses
+Cache Accesses:         37 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:       17 transfers
+
+Experiment number: 6
+MESI
+Run Time:             4925 cycles
+Cache Misses:           62 misses
+Cache Accesses:        747 accesses
+Silent Upgrades:        25 upgrades
+$-to-$ Transfers:       15 transfers
+
+MOSI
+Run Time:             6975 cycles
+Cache Misses:           87 misses
+Cache Accesses:        747 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:       20 transfers
+
+MOESIF
+Run Time:             3125 cycles
+Cache Misses:           62 misses
+Cache Accesses:        747 accesses
+Silent Upgrades:        25 upgrades
+$-to-$ Transfers:       33 transfers
+
+Experiment number: 7
+MESI
+Run Time:             3993 cycles
+Cache Misses:           55 misses
+Cache Accesses:        952 accesses
+Silent Upgrades:        24 upgrades
+$-to-$ Transfers:       17 transfers
+
+MOSI
+Run Time:             5359 cycles
+Cache Misses:           79 misses
+Cache Accesses:        952 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:       28 transfers
+
+MOESIF
+Run Time:             2909 cycles
+Cache Misses:           55 misses
+Cache Accesses:        952 accesses
+Silent Upgrades:        24 upgrades
+$-to-$ Transfers:       28 transfers
+
+Experiment number: 8
+MESI
+Run Time:             6441 cycles
+Cache Misses:           92 misses
+Cache Accesses:        800 accesses
+Silent Upgrades:        19 upgrades
+$-to-$ Transfers:       30 transfers
+
+MOSI
+Run Time:             8477 cycles
+Cache Misses:          110 misses
+Cache Accesses:        800 accesses
+Silent Upgrades:         0 upgrades
+$-to-$ Transfers:       28 transfers
+
+MOESIF
+Run Time:             4141 cycles
+Cache Misses:           92 misses
+Cache Accesses:        800 accesses
+Silent Upgrades:        19 upgrades
+$-to-$ Transfers:       53 transfers
+
